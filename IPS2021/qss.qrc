@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/psblack/radiobutton_unchecked_disable.png</file>
+        <file>image/psblack/radiobutton_unchecked.png</file>
+        <file>image/psblack/radiobutton_checked_disable.png</file>
+        <file>image/psblack/radiobutton_checked.png</file>
+        <file>image/psblack/nvr.png</file>
+        <file>image/psblack/ipc_play.png</file>
+        <file>image/psblack/ipc_normal.png</file>
+        <file>image/psblack/checkbox_unchecked_disable.png</file>
+        <file>image/psblack/checkbox_unchecked.png</file>
+        <file>image/psblack/checkbox_parcial_disable.png</file>
+        <file>image/psblack/checkbox_parcial.png</file>
+        <file>image/psblack/checkbox_checked_disable.png</file>
+        <file>image/psblack/checkbox_checked.png</file>
+        <file>image/psblack/calendar_prevmonth.png</file>
+        <file>image/psblack/calendar_nextmonth.png</file>
+        <file>image/psblack/branch_open.png</file>
+        <file>image/psblack/branch_close.png</file>
+        <file>image/psblack/add_top.png</file>
+        <file>image/psblack/add_right.png</file>
+        <file>image/psblack/add_left.png</file>
+        <file>image/psblack/add_bottom.png</file>
+        <file>image/psblack/IPC_Record.png</file>
+        <file>image/psblack/IPC_RealPlayed.png</file>
+        <file>image/psblack/IPC_Disconnected.png</file>
+        <file>image/psblack/IPC_Connected.png</file>
+        <file>image/psblack/Camera.png</file>
+    </qresource>
+</RCC>
