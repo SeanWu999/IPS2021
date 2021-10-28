@@ -18,11 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Tools/iconhelper.cpp \
     main.cpp \
-    ips2021.cpp
+    ips2021.cpp \
+    src/camera.cpp \
+    src/detector.cpp \
+    src/maincontroller.cpp \
+    src/message.cpp
 
 HEADERS += \
     Tools/iconhelper.h \
-    ips2021.h
+    ips2021.h \
+    src/camera.h \
+    src/detector.h \
+    src/maincontroller.h \
+    src/message.h \
+    src/myinclude.h
 
 FORMS += \
     ips2021.ui
@@ -34,3 +43,31 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     qss.qrc
+
+unix:!macx: LIBS += -L$$PWD/lib/opencv4.2.0/ -ljasper
+unix:!macx: LIBS += -L$$PWD/lib/opencv4.2.0/ -lopencv_core
+unix:!macx: LIBS += -L$$PWD/lib/opencv4.2.0/ -lopencv_imgcodecs
+unix:!macx: LIBS += -L$$PWD/lib/opencv4.2.0/ -lopencv_imgproc
+unix:!macx: LIBS += -L$$PWD/lib/modbus/ -lmodbus
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMvCameraControl
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lFormatConversion
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lGCBase_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lGenApi_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -llog4cpp_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lLog_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMathParser_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMediaProcess
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMVGigEVisionSDK
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMVRender
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMvUsb3vTL
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lNodeMapData_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/hik/ -lXmlParser_gcc421_v3_0
+
+INCLUDEPATH += $$PWD/include/opencv2
+DEPENDPATH += $$PWD/include/opencv2
+
+INCLUDEPATH += $$PWD/include/modbus
+DEPENDPATH += $$PWD/include/modbus
+
+INCLUDEPATH += $$PWD/include/hik/include
+DEPENDPATH += $$PWD/include/hik/include
