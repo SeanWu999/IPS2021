@@ -6,7 +6,7 @@
 class Detector
 {
 public:
-    Detector(vector<queue<Mat>> *imgQueuePtrList);
+    Detector(vector<queue<Mat>> *inputQueuePtrList, vector<queue<string>> *inputResultQueueList);
     ~Detector();
 
     void initModel();
@@ -18,6 +18,7 @@ public:
 private:
     bool isRunning = false;
     vector<queue<Mat>> *imgPtrList;
+    vector<queue<string>> *resultQueueList;
 
 };
 

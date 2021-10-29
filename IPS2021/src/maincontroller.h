@@ -4,6 +4,7 @@
 #include <src/detector.h>
 #include <src/camera.h>
 #include <src/myinclude.h>
+#include <src/message.h>
 
 //MCamera: address to Camera
 typedef Camera *MCamera;
@@ -22,10 +23,14 @@ private:
     void initController();
     void initDetector();
     void initCamera();
+    void initMessage();
 
     Detector *myDetector;
+    Message *myMessage;
     vector<queue<Mat>> imgQueuePtrList;
+    vector<queue<string>> resultQueueList;
     MCamera myCameraPtr[CHANNEL_NUMBER];
+    bool plcConnectFlag = false;
 
 };
 

@@ -13,6 +13,7 @@
 
 #define MODBUS_WRITE_SIZE 4
 #define CHANNEL_NUMBER 2
+#define SEND_GAP_TIME 30
 
 
 using namespace std;

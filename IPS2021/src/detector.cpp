@@ -1,7 +1,7 @@
 #include "detector.h"
 
-Detector::Detector(vector<queue<Mat>> *imgQueuePtrList){
-    imgPtrList = imgQueuePtrList;
+Detector::Detector(vector<queue<Mat>> *inputQueuePtrList, vector<queue<string>> *inputResultQueueList):imgPtrList(inputQueuePtrList), resultQueueList(inputResultQueueList){
+
 }
 
 Detector::~Detector(){
@@ -24,6 +24,7 @@ void Detector::runInference(){
                    ***************************
                 */
                 cout << "Queue " << i << " inferencing ...... left: " << imgPtrList->at(i).size() << endl;
+                string label = "";
             }
         }
 
@@ -44,7 +45,6 @@ void Detector::start(){
     isRunning = true;
     thread t(&Detector::runInference,this);
     t.detach();
-
 }
 
 void Detector::stop(){

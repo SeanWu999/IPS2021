@@ -1,18 +1,17 @@
 #include "message.h"
 
-Message::Message()
-{
+Message::Message(vector<queue<string>> *inputQueueList, const char *plcIp, int plcPort):resultQueueList(inputQueueList),ip_address(plcIp), port(plcPort){
 
 }
 
-Message::~Message()
-{
+Message::~Message(){
 
 }
 
 void Message::init_coil_addrs(std::vector<int> addrs){
     coil_addrs.assign(addrs.begin(), addrs.end());
 }
+
 
 
 //批量写入plc线圈
@@ -32,7 +31,7 @@ int Message::writeModbusBatch(const char *ip_address, int port, std::vector<std:
     }
 
     uint8_t modbus_value[MODBUS_WRITE_SIZE];
-    for(unsigned int i=0;i<labels.size();i++){
+    for(size_t i=0;i<labels.size();i++){
         if(0==labels[i].compare("none")){
             modbus_value[0] = 0;
             modbus_value[1] = 0;
@@ -127,6 +126,43 @@ int Message::writeModbusBatch(const char *ip_address, int port, std::vector<std:
     usleep(20 * 1000);
     return 1;
 
+}
+
+void Message::runSending(){
+    string empty_label = "none";
+
+    while(isRunning){
+        vector<string> labels;
+        for(size_t i=0;i<resultQueueList->size();i++){
+            if(resultQueueList->at(i).size() > 0){
+                labels.push_back(resultQueueList->at(i).front());
+                resultQueueList->at(i).pop();
+            }else{
+                labels.push_back(empty_label);
+            }
+        }
+
+        writeModbusBatch(ip_address, port, labels);
+        usleep(1000 * SEND_GAP_TIME);
+    }
+
+    for(size_t i=0;i<resultQueueList->size();i++){
+        while(resultQueueList->at(i).size() > 0){
+            resultQueueList->at(i).pop();
+        }
+    }
+}
+
+void Message::start(){
+    cout << "start message work ......" << endl;
+    isRunning = true;
+    thread t(&Message::runSending,this);
+    t.detach();
+}
+
+void Message::stop(){
+    cout << "stop message work ......" << endl;
+    isRunning =false;
 }
 
 
