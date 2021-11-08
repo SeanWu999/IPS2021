@@ -13,6 +13,7 @@ void Detector::initModel(){
 }
 
 void Detector::runInference(){
+    int number = 0;
     while(isRunning){
         for(size_t i=0; i<imgPtrList->size(); i++){
             if(imgPtrList->at(i).size() > 0){
@@ -24,6 +25,8 @@ void Detector::runInference(){
                    ***************************
                 */
                 cout << "Queue " << i << " inferencing ...... left: " << imgPtrList->at(i).size() << endl;
+                number ++;
+                imwrite("./save/" + to_string(number) + ".jpg",image);
                 string label = "";
             }
         }

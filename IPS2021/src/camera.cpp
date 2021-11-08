@@ -89,46 +89,42 @@ void Camera::openCamera(unsigned int deviceId){
         }
     }
 
-    nRet = MV_CC_SetBoolValue(handle, "AcquisitionFrameRateEnable", false);
-    if (MV_OK != nRet){
-        printf("set AcquisitionFrameRateEnable fail! nRet [%x]\n", nRet);
-    }
-
     // 设置触发模式为on
     // set trigger mode as on
-    nRet = MV_CC_SetEnumValue(handle, "TriggerMode", 1);
+    nRet = MV_CC_SetEnumValue(handle, "TriggerMode", 0);
     if (MV_OK != nRet){
         printf("MV_CC_SetTriggerMode fail! nRet [%x]\n", nRet);
     }
 
+    //设置可调节帧率为on
+    nRet = MV_CC_SetEnumValue(handle, "AcquisitionFrameRateMode", 1);
+    if (MV_OK != nRet){
+        printf("MV_CC_SetAcquisitionFrameRateMode fail! nRet [%x]\n", nRet);
+    }
+
+    //设置帧率
+    nRet = MV_CC_SetFloatValue(handle, "AcquisitionFrameRate", 1.0);
+    if (MV_OK != nRet){
+        printf("MV_CC_SetFrameRate fail! nRet [%x]\n", nRet);
+    }
+
+
     // 设置触发源
     // set trigger source
-    _MV_CAM_TRIGGER_SOURCE_ triger = MV_TRIGGER_SOURCE_LINE0;
+    /*_MV_CAM_TRIGGER_SOURCE_ triger = MV_TRIGGER_SOURCE_LINE0;
     nRet = MV_CC_SetEnumValue(handle, "TriggerSource", triger);
     if (MV_OK != nRet){
         printf("MV_CC_SetTriggerSource fail! nRet [%x]\n", nRet);
-    }
+    }*/
 
     // 设置曝光时间
     // set exposure time
-    /*nRet = MV_CC_SetEnumValue(handle, "ExposureTime ", 20);
-    if (MV_OK != nRet){
-        printf("MV_CC_SetExposureTime fail! nRet [%x]\n", nRet);
-    }
 
     // 设置延时时间
     // set TriggerDelay time
-    nRet = MV_CC_SetEnumValue(handle, "TriggerDelay ", 20);
-    if (MV_OK != nRet){
-        printf("MV_CC_SetTriggerDelay fail! nRet [%x]\n", nRet);
-    }
 
     // 设置图像像素格式
     // set pixel format
-    nRet = MV_CC_SetEnumValue(handle, "PixelFormat  ", 0x01080008);
-    if (MV_OK != nRet){
-        printf("MV_CC_SetPixelFormat  fail! nRet [%x]\n", nRet);
-    }*/
 
     // 注册抓图回调
     // register image callback
@@ -151,6 +147,37 @@ void Camera::openCamera(unsigned int deviceId){
 
 }
 
+void Camera::closeCamera(){
+    // 停止取流
+    // end grab image
+    nRet = MV_CC_StopGrabbing(handle);
+    if (MV_OK != nRet){
+        printf("MV_CC_StopGrabbing fail! nRet [%x]\n", nRet);
+    }
+
+    // 关闭设备
+    // close device
+    nRet = MV_CC_CloseDevice(handle);
+    if (MV_OK != nRet){
+        printf("MV_CC_CloseDevice fail! nRet [%x]\n", nRet);
+    }
+
+    // 销毁句柄
+    // destroy handle
+    nRet = MV_CC_DestroyHandle(handle);
+    if (MV_OK != nRet){
+        printf("MV_CC_DestroyHandle fail! nRet [%x]\n", nRet);
+    }
+
+    if (nRet != MV_OK){
+        if (handle != NULL){
+            MV_CC_DestroyHandle(handle);
+            handle = NULL;
+        }
+    }
+
+}
+
 
 void Camera::imageCreater(){
     Mat image = imread("/home/sean/wuzhe2/data/coco2017/test2017/000000000665.jpg");
@@ -160,14 +187,17 @@ void Camera::imageCreater(){
         imageQueue->push(image);
         sleep(1);
     }
+}
 
-
+void Camera::grabImage(){
+    openCamera(camreaId);
 }
 
 void Camera::start(){
     cout << "CameraId: " << camreaId << " start work ......" << endl;
     isRunning = true;
-    thread t(&Camera::imageCreater,this);
+    enumCamera();
+    thread t(&Camera::grabImage,this);
     t.detach();
 
 }
@@ -175,6 +205,9 @@ void Camera::start(){
 void Camera::stop(){
     cout << "CameraId: " << camreaId << " stop work ......" << endl;
     isRunning = false;
+    closeCamera();
 }
+
+
 
 

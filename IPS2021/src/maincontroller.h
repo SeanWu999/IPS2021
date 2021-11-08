@@ -31,6 +31,8 @@ private:
     vector<queue<string>> resultQueueList;
     MCamera myCameraPtr[CHANNEL_NUMBER];
     bool plcConnectFlag = false;
+    const char *ip;
+    int port;
 
 };
 

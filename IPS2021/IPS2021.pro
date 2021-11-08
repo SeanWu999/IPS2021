@@ -21,6 +21,7 @@ SOURCES += \
     ips2021.cpp \
     src/camera.cpp \
     src/detector.cpp \
+    src/global.cpp \
     src/maincontroller.cpp \
     src/message.cpp
 
@@ -29,6 +30,7 @@ HEADERS += \
     ips2021.h \
     src/camera.h \
     src/detector.h \
+    src/global.h \
     src/maincontroller.h \
     src/message.h \
     src/myinclude.h
@@ -62,6 +64,8 @@ unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMVRender
 unix:!macx: LIBS += -L$$PWD/lib/hik/ -lMvUsb3vTL
 unix:!macx: LIBS += -L$$PWD/lib/hik/ -lNodeMapData_gcc421_v3_0
 unix:!macx: LIBS += -L$$PWD/lib/hik/ -lXmlParser_gcc421_v3_0
+unix:!macx: LIBS += -L$$PWD/lib/yaml-cpp/ -lyaml-cpp
+
 
 INCLUDEPATH += $$PWD/include/opencv2
 DEPENDPATH += $$PWD/include/opencv2
@@ -71,3 +75,6 @@ DEPENDPATH += $$PWD/include/modbus
 
 INCLUDEPATH += $$PWD/include/hik/include
 DEPENDPATH += $$PWD/include/hik/include
+
+INCLUDEPATH += $$PWD/include/yaml-cpp
+DEPENDPATH += $$PWD/include/yaml-cpp

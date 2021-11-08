@@ -27,6 +27,7 @@ private:
     void initForm();
     void initConnect();
     void deleteConnect();
+    bool switch_on = false;
 
     MainController *controller;
 };

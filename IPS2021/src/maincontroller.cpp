@@ -28,6 +28,15 @@ void MainController::initController(){
         queue<string> resultTemp;
         resultQueueList.push_back(resultTemp);
     }
+
+    const string configPath = "./config.yaml";
+    if(file_exists(configPath)){
+        Config myConfig = readYamlConfig(configPath);
+        ip = myConfig.ip;
+        port = myConfig.port;
+    }else{
+        exit(1);
+    }
 }
 
 void MainController::initDetector(){
@@ -44,8 +53,6 @@ void MainController::initCamera(){
 }
 
 void MainController::initMessage(){
-    const char *ip = "192.168.0.111";
-    int port = 100;
     myMessage = new Message(&resultQueueList, ip, port);
 }
 

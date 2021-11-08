@@ -34,13 +34,24 @@ void IPS2021::init(){
 }
 
 void IPS2021::clickStartButton(){
-    cout << "ok! clicked START ..." << endl;
-    controller->threadsStart();
+    if(switch_on){
+        cout << "the progress has started ..." << endl;
+    }else{
+        cout << "ok! clicked START ..." << endl;
+        controller->threadsStart();
+        switch_on = true;
+    }
 }
 
 void IPS2021::clickStopButton(){
-    cout << "ok! clicked STOP ..." << endl;
-    controller->threadsStop();
+    if(switch_on){
+        cout << "ok! clicked STOP ..." << endl;
+        controller->threadsStop();
+        switch_on = false;
+    }else{
+        cout << "the progress has stop ..." << endl;
+    }
+
 }
 
 

@@ -3,17 +3,6 @@
 
 #include <src/myinclude.h>
 
-static void __stdcall ImageCallBackEx(unsigned char * pData, MV_FRAME_OUT_INFO_EX* pFrameInfo, void* cImageQueue)
-{
-
-    queue<Mat> *tempImageQueue = (queue<Mat>*)cImageQueue;
-    if (pFrameInfo){
-        printf("GetOneFrame, Width[%d], Height[%d], nFrameNum[%d]\n", pFrameInfo->nWidth, pFrameInfo->nHeight, pFrameInfo->nFrameNum);
-        cv::Mat steamImg(pFrameInfo->nHeight, pFrameInfo->nWidth, CV_8UC3, pData);
-        tempImageQueue->push(steamImg);
-    }
-}
-
 class Camera
 {
 public:
@@ -22,8 +11,10 @@ public:
     void initCamera(size_t cid, queue<Mat> *inputQueue);
     void enumCamera();
     void openCamera(unsigned int deviceId);
+    void closeCamera();
 
     void imageCreater();
+    void grabImage();
     void start();
     void stop();
 

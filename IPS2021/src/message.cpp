@@ -8,24 +8,24 @@ Message::~Message(){
 
 }
 
-void Message::init_coil_addrs(std::vector<int> addrs){
+void Message::init_coil_addrs(vector<int> addrs){
     coil_addrs.assign(addrs.begin(), addrs.end());
 }
 
 
 
 //批量写入plc线圈
-int Message::writeModbusBatch(const char *ip_address, int port, std::vector<std::string> labels){
+int Message::writeModbusBatch(const char *ip_address, int port, vector<string> labels){
     int rc = 1;
     ctx = NULL;
     ctx = modbus_new_tcp(ip_address, port);
     if (ctx == NULL){
-        std::cout << "Unable to allocate libmodbus context" << std::endl;
+        cout << "Unable to allocate libmodbus context" << endl;
         return -1;
     }
 
     if (modbus_connect(ctx) == -1){
-        std::cout << "Connection failed: " << modbus_strerror(errno) << std::endl;
+        cout << "Connection failed: " << modbus_strerror(errno) << endl;
         modbus_free(ctx);
         return -1;
     }
@@ -105,7 +105,7 @@ int Message::writeModbusBatch(const char *ip_address, int port, std::vector<std:
         }
 
         if(modbus_write_bits(ctx, coil_addrs[i], MODBUS_WRITE_SIZE, modbus_value) < 1){
-            std::cout << "ERROR modbus_write_bit  " << rc << std::endl;
+            cout << "ERROR modbus_write_bit  " << rc << endl;
             return -1;
         }
 
@@ -115,7 +115,7 @@ int Message::writeModbusBatch(const char *ip_address, int port, std::vector<std:
         modbus_value[2] = 0;
         modbus_value[3] = 0;
         if(modbus_write_bits(ctx, coil_addrs[i], MODBUS_WRITE_SIZE, modbus_value) < 1){
-            std::cout << "ERROR modbus_write_bit  " << rc << std::endl;
+            cout << "ERROR modbus_write_bit  " << rc << endl;
             return -1;
         }
 
@@ -142,7 +142,7 @@ void Message::runSending(){
             }
         }
 
-        writeModbusBatch(ip_address, port, labels);
+        //writeModbusBatch(ip_address, port, labels);
         usleep(1000 * SEND_GAP_TIME);
     }
 
