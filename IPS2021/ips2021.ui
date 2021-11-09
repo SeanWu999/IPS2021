@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>230</y>
+      <x>40</x>
+      <y>20</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -30,14 +30,41 @@
    <widget class="QPushButton" name="stopButton">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>230</y>
+      <x>150</x>
+      <y>20</y>
       <width>89</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>stop</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="devicesLabel">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>100</y>
+      <width>181</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <italic>true</italic>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="text">
+     <string>camera devices :  2</string>
     </property>
    </widget>
   </widget>

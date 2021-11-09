@@ -11,6 +11,7 @@ Camera::~Camera(){
 void Camera::initCamera(size_t cid, queue<Mat> *inputQueue){
     camreaId = cid;
     imageQueue = inputQueue;
+    enumCamera();
 }
 
 void Camera::enumCamera(){
@@ -24,10 +25,12 @@ void Camera::enumCamera(){
         for (unsigned int i = 0; i < stDeviceList.nDeviceNum; i++){
             printf("[device %d]:\n", i);
             MV_CC_DEVICE_INFO* pDeviceInfo = stDeviceList.pDeviceInfo[i];
-            PrintDeviceInfo(pDeviceInfo);
+            //PrintDeviceInfo(pDeviceInfo);
         }
+        devicesAvailable = true;
     }else{
         printf("Find No Devices!\n");
+        devicesAvailable = false;
     }
 }
 
@@ -128,7 +131,7 @@ void Camera::openCamera(unsigned int deviceId){
 
     // 注册抓图回调
     // register image callback
-    nRet = MV_CC_RegisterImageCallBackEx(handle, ImageCallBackEx, imageQueue);
+    nRet = MV_CC_RegisterImageCallBackEx(handle, BayerImageCallBackEx, imageQueue);
     if (MV_OK != nRet){
         printf("MV_CC_RegisterImageCallBackEx fail! nRet [%x]\n", nRet);
     }
@@ -148,33 +151,36 @@ void Camera::openCamera(unsigned int deviceId){
 }
 
 void Camera::closeCamera(){
-    // 停止取流
-    // end grab image
-    nRet = MV_CC_StopGrabbing(handle);
-    if (MV_OK != nRet){
-        printf("MV_CC_StopGrabbing fail! nRet [%x]\n", nRet);
-    }
+    if(devicesAvailable){
+        // 停止取流
+        // end grab image
+        nRet = MV_CC_StopGrabbing(handle);
+        if (MV_OK != nRet){
+            printf("MV_CC_StopGrabbing fail! nRet [%x]\n", nRet);
+        }
 
-    // 关闭设备
-    // close device
-    nRet = MV_CC_CloseDevice(handle);
-    if (MV_OK != nRet){
-        printf("MV_CC_CloseDevice fail! nRet [%x]\n", nRet);
-    }
+        // 关闭设备
+        // close device
+        nRet = MV_CC_CloseDevice(handle);
+        if (MV_OK != nRet){
+            printf("MV_CC_CloseDevice fail! nRet [%x]\n", nRet);
+        }
 
-    // 销毁句柄
-    // destroy handle
-    nRet = MV_CC_DestroyHandle(handle);
-    if (MV_OK != nRet){
-        printf("MV_CC_DestroyHandle fail! nRet [%x]\n", nRet);
-    }
+        // 销毁句柄
+        // destroy handle
+        nRet = MV_CC_DestroyHandle(handle);
+        if (MV_OK != nRet){
+            printf("MV_CC_DestroyHandle fail! nRet [%x]\n", nRet);
+        }
 
-    if (nRet != MV_OK){
-        if (handle != NULL){
-            MV_CC_DestroyHandle(handle);
-            handle = NULL;
+        if (nRet != MV_OK){
+            if (handle != NULL){
+                MV_CC_DestroyHandle(handle);
+                handle = NULL;
+            }
         }
     }
+
 
 }
 
@@ -194,11 +200,14 @@ void Camera::grabImage(){
 }
 
 void Camera::start(){
-    cout << "CameraId: " << camreaId << " start work ......" << endl;
-    isRunning = true;
-    enumCamera();
-    thread t(&Camera::grabImage,this);
-    t.detach();
+    if(devicesAvailable){
+        cout << "CameraId: " << camreaId << " start work ......" << endl;
+        isRunning = true;
+        thread t(&Camera::grabImage,this);
+        t.detach();
+    }else{
+        cout << "CameraId: " << camreaId << " camera start failed ......" << endl;
+    }
 
 }
 

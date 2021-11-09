@@ -20,6 +20,7 @@ public:
 public slots:
     void clickStartButton();
     void clickStopButton();
+    void slots_update_ui_devices(int devices_number);
 
 private:
     Ui::IPS2021 *ui;

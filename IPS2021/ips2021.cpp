@@ -6,6 +6,9 @@ IPS2021::IPS2021(QWidget *parent)
     , ui(new Ui::IPS2021)
 {
     ui->setupUi(this);
+
+    controller = new MainController();
+    initForm();
     initConnect();
     init();
 }
@@ -18,19 +21,24 @@ IPS2021::~IPS2021(){
 void IPS2021::initConnect(){
     connect(ui->startButton, SIGNAL(clicked()), this, SLOT(clickStartButton()));
     connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(clickStopButton()));
+
+    connect(controller, SIGNAL(signal_update_ui_devices(int)), this, SLOT(slots_update_ui_devices(int)));
 }
 
 void IPS2021::deleteConnect(){
     disconnect(ui->startButton, SIGNAL(clicked()), this, SLOT(clickStartButton()));
     disconnect(ui->stopButton, SIGNAL(clicked()), this, SLOT(clickStopButton()));
+
+    disconnect(controller, SIGNAL(signal_update_ui_devices(int)), this, SLOT(slots_update_ui_devices(int)));
 }
 
 void IPS2021::initForm(){
-
+    QString s = QString("Devices: ");
+    ui->devicesLabel->setText(s);
 }
 
 void IPS2021::init(){
-    controller = new MainController();
+    controller->initModule();
 }
 
 void IPS2021::clickStartButton(){
@@ -53,5 +61,12 @@ void IPS2021::clickStopButton(){
     }
 
 }
+
+void IPS2021::slots_update_ui_devices(int devices_number){
+    QString s = QString("Find Devices: ");
+    s.append(QString::number(devices_number));
+    ui->devicesLabel->setText(s);
+}
+
 
 

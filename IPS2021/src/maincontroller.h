@@ -5,17 +5,24 @@
 #include <src/camera.h>
 #include <src/myinclude.h>
 #include <src/message.h>
+#include <QMainWindow>
 
 //MCamera: address to Camera
 typedef Camera *MCamera;
 
-class MainController
+class MainController : public QMainWindow
 {
+    Q_OBJECT
 public:
     MainController();
     ~MainController();
+    void initModule();
     void threadsStart();
     void threadsStop();
+
+signals:
+    void signal_update_ui_devices(int devices_number);
+
 
 private:
     void initConnect();
@@ -33,6 +40,7 @@ private:
     bool plcConnectFlag = false;
     const char *ip;
     int port;
+    string model_path;
 
 };
 

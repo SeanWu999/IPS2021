@@ -28,6 +28,7 @@ private:
     unsigned int cameraId = -1;
     int nRet = MV_OK;
     MV_CC_DEVICE_INFO_LIST stDeviceList;
+    bool devicesAvailable = false;
 
     bool PrintDeviceInfo(MV_CC_DEVICE_INFO* pstMVDevInfo);
 

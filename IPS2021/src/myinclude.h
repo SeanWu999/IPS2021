@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <thread>
 #include <queue>
+#include <dlfcn.h>
 
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
